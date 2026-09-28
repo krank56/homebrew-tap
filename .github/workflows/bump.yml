@@ -1,0 +1,61 @@
+# Keeps the formula on the latest jenklod-batman release. It polls rather
+# than being triggered by the release, so no cross-repo token is needed.
+name: bump
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: bump
+
+jobs:
+  bump:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for a new release
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view -R krank56/jenklod-batman --json tagName -q .tagName)
+          have=$(sed -nE 's#.*/download/(v[^/]+)/.*#\1#p' Formula/jenklod-batman.rb | head -1)
+          echo "latest=$tag formula=$have"
+          if [ "$tag" != "$have" ]; then echo "tag=$tag" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Render the formula
+        if: steps.check.outputs.tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.check.outputs.tag }}
+        run: |
+          gh release download "$TAG" -R krank56/jenklod-batman -p checksums.txt -O "$RUNNER_TEMP/checksums.txt"
+          bin/render-formula "$TAG" "$RUNNER_TEMP/checksums.txt"
+          git diff
+
+      - name: Install and test it
+        if: steps.check.outputs.tag
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_FROM_API: "1"
+        run: |
+          tap="$(brew --repository)/Library/Taps/krank56/homebrew-tap"
+          mkdir -p "$(dirname "$tap")" && ln -s "$GITHUB_WORKSPACE" "$tap"
+          brew audit --strict krank56/tap/jenklod-batman
+          brew install krank56/tap/jenklod-batman
+          brew test krank56/tap/jenklod-batman
+
+      - name: Commit
+        if: steps.check.outputs.tag
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "jenklod-batman ${TAG#v}"
+          git push

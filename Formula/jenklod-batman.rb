@@ -30,6 +30,6 @@ class JenklodBatman < Formula
   end
 
   test do
-    assert_match "jenklod-batman v0.2.0", shell_output("#{bin}/jenklod-batman --version")
+    assert_match "jenklod-batman v#{version}", shell_output("#{bin}/jenklod-batman --version")
   end
 end

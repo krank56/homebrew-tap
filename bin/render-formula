@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Writes Formula/jenklod-batman.rb for a release: render-formula 0.3.0 checksums.txt
+set -euo pipefail
+v=${1#v}
+sums=$2
+sha() {
+	local s
+	s=$(awk -v f="jenklod-batman_v${v}_$1.tar.gz" '$2 == f { print $1 }' "$sums")
+	[[ -n $s ]] || { echo "no checksum for $1 in $sums" >&2; exit 1; }
+	echo "$s"
+}
+base="https://github.com/krank56/jenklod-batman/releases/download/v${v}/jenklod-batman_v${v}"
+cat > Formula/jenklod-batman.rb <<RUBY
+class JenklodBatman < Formula
+  desc "Terminal UI for Jenkins: watched jobs, cross-folder search and macros"
+  homepage "https://github.com/krank56/jenklod-batman"
+  license "MIT"
+
+  on_macos do
+    on_arm do
+      url "${base}_darwin_arm64.tar.gz"
+      sha256 "$(sha darwin_arm64)"
+    end
+    on_intel do
+      url "${base}_darwin_amd64.tar.gz"
+      sha256 "$(sha darwin_amd64)"
+    end
+  end
+
+  on_linux do
+    on_arm do
+      url "${base}_linux_arm64.tar.gz"
+      sha256 "$(sha linux_arm64)"
+    end
+    on_intel do
+      url "${base}_linux_amd64.tar.gz"
+      sha256 "$(sha linux_amd64)"
+    end
+  end
+
+  def install
+    bin.install "jenklod-batman"
+  end
+
+  test do
+    assert_match "jenklod-batman v#{version}", shell_output("#{bin}/jenklod-batman --version")
+  end
+end
+RUBY

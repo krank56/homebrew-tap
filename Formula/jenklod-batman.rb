@@ -1,5 +1,5 @@
 class JenklodBatman < Formula
-  desc "Terminal UI for Jenkins: watched jobs, cross-folder search and macros"
+  desc "Jenkins TUI: watch jobs, search all folders and run build macros from a terminal"
   homepage "https://github.com/krank56/jenklod-batman"
   license "MIT"
 

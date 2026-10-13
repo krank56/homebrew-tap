@@ -5,23 +5,23 @@ class JenklodBatman < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/krank56/jenklod-batman/releases/download/v0.3.0/jenklod-batman_v0.3.0_darwin_arm64.tar.gz"
-      sha256 "3c980a61105b19cf6ab58ede29044d29a9764d242c987cc545437df3f0600c5f"
+      url "https://github.com/krank56/jenklod-batman/releases/download/v0.4.0/jenklod-batman_v0.4.0_darwin_arm64.tar.gz"
+      sha256 "b80a2592f106eaab7769f52283cbaebe6c9041356eab83bea73976ee0510fd7f"
     end
     on_intel do
-      url "https://github.com/krank56/jenklod-batman/releases/download/v0.3.0/jenklod-batman_v0.3.0_darwin_amd64.tar.gz"
-      sha256 "85618d1b465790ce47d8aa9b913bb91dd4d1f8ed60c21ebd84427fcac64c3b3d"
+      url "https://github.com/krank56/jenklod-batman/releases/download/v0.4.0/jenklod-batman_v0.4.0_darwin_amd64.tar.gz"
+      sha256 "f81a9a82cb7acf6d4484242721d766fe50f2abab6101fb7dc9937238be37ec1d"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/krank56/jenklod-batman/releases/download/v0.3.0/jenklod-batman_v0.3.0_linux_arm64.tar.gz"
-      sha256 "c026ac80e510da3186846e49d397043b80b50920e89884d275b3d4949a6ea3c1"
+      url "https://github.com/krank56/jenklod-batman/releases/download/v0.4.0/jenklod-batman_v0.4.0_linux_arm64.tar.gz"
+      sha256 "ef0ce17dcfcba39d3091da7950e421741a0406058664aa377ac83e13c9332ffa"
     end
     on_intel do
-      url "https://github.com/krank56/jenklod-batman/releases/download/v0.3.0/jenklod-batman_v0.3.0_linux_amd64.tar.gz"
-      sha256 "a4fc11fea672b008e83702ce243e6f4a368181ab74f2036aa2c707fd3ddccf73"
+      url "https://github.com/krank56/jenklod-batman/releases/download/v0.4.0/jenklod-batman_v0.4.0_linux_amd64.tar.gz"
+      sha256 "849610589605d21424211a95c5a0011c1226c99cedb6573a2b322209e3024a6b"
     end
   end
 

@@ -27,9 +27,11 @@ class JenklodBatman < Formula
 
   def install
     bin.install "jenklod-batman"
+    bin.install_symlink "jenklod-batman" => "jk"
   end
 
   test do
     assert_match "jenklod-batman v#{version}", shell_output("#{bin}/jenklod-batman --version")
+    assert_match "jenklod-batman v#{version}", shell_output("#{bin}/jk --version")
   end
 end
